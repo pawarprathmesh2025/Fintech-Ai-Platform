@@ -1,75 +1,21 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import AnimatedBackground from "../components/AnimatedBackground";
+import FloatingIcons from "../components/FloatingIcons";
+import LoginForm from "../components/LoginForm";
 
-function Login() {
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    console.log("Login Data:", {
-      email,
-      password
-    });
-
-    // Later we will connect this to backend API
-  };
-
+export default function LoginScreen() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-teal-50 flex items-center justify-center p-4 overflow-hidden relative">
 
-      <div className="bg-white p-8 rounded-xl shadow-lg w-96">
+      <AnimatedBackground />
 
-        <h2 className="text-2xl font-bold mb-6 text-center">
-          Fintech Login
-        </h2>
+      <div className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-12 relative z-10">
 
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <FloatingIcons />
 
-          {/* Email */}
-          <input
-            type="email"
-            placeholder="Enter your email"
-            className="border p-3 rounded-lg"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-
-          {/* Password */}
-          <input
-            type="password"
-            placeholder="Enter your password"
-            className="border p-3 rounded-lg"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-
-          {/* Login Button */}
-          <button
-            type="submit"
-            className="bg-green-500 text-white p-3 rounded-lg hover:bg-green-600"
-          >
-            Login
-          </button>
-
-        </form>
-
-        {/* Signup Link */}
-        <p className="text-center mt-4 text-sm">
-          Don't have an account?{" "}
-          <Link to="/signup" className="text-green-600 font-medium">
-            Signup
-          </Link>
-        </p>
+        <LoginForm />
 
       </div>
 
     </div>
   );
 }
-
-export default Login;

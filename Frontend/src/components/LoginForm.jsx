@@ -13,7 +13,7 @@ const [password, setPassword] = useState("");
 
 const handleLogin = (e) => {
 e.preventDefault();
-navigate("/app");
+navigate("/track");
 };
 
 return (

@@ -1,212 +1,141 @@
 import React, { useState } from "react";
-import { Home, BarChart2, Target, Folder, User, Plus, Utensils, ShoppingBag, Wallet, CreditCard, ShoppingCart } from "lucide-react";
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell } from "recharts";
+import Sidebar from "./Sidebar";
+
+const expenseCategories = [
+  { name: "Housing", amount: 900, percentage: "30%", color: "#10b981" },
+  { name: "Food", amount: 450, percentage: "15%", color: "#38bdf8" },
+  { name: "Transport", amount: 360, percentage: "12%", color: "#a855f7" },
+  { name: "Utilities", amount: 240, percentage: "8%", color: "#fbbf24" },
+  { name: "Entertainment", amount: 300, percentage: "10%", color: "#ef4444" },
+  { name: "Healthcare", amount: 240, percentage: "8%", color: "#ec4899" },
+  { name: "Savings", amount: 360, percentage: "12%", color: "#22c55e" },
+  { name: "Other", amount: 150, percentage: "5%", color: "#64748b" },
+];
+
+const monthlyData = [
+  { month: "Jan", income: 4800, expenses: 3000 },
+  { month: "Feb", income: 4700, expenses: 2900 },
+  { month: "Mar", income: 5200, expenses: 3100 },
+  { month: "Apr", income: 5100, expenses: 3050 },
+  { month: "May", income: 4950, expenses: 2950 },
+  { month: "Jun", income: 5050, expenses: 3000 },
+  { month: "Jul", income: 4700, expenses: 2920 },
+  { month: "Aug", income: 5100, expenses: 2850 },
+  { month: "Sep", income: 5000, expenses: 2950 },
+  { month: "Oct", income: 5200, expenses: 3100 },
+  { month: "Nov", income: 5100, expenses: 3050 },
+  { month: "Dec", income: 5300, expenses: 3200 },
+];
+
+const donutData = expenseCategories.map((category) => ({ name: category.name, value: category.amount, color: category.color }));
 
 export default function TrackPage() {
-  const [showModal, setShowModal] = useState(false);
-  const [amount, setAmount] = useState("");
-
-  const [chartData, setChartData] = useState([
-    { m: "Oct", inc: 85000, exp: 70000 },
-    { m: "Nov", inc: 86000, exp: 72000 },
-    { m: "Dec", inc: 95000, exp: 71000 },
-    { m: "Jan", inc: 84000, exp: 69000 },
-    { m: "Feb", inc: 86000, exp: 72000 },
-    { m: "Mar", inc: 87000, exp: 70000 },
-  ]);
+  const [activeTab, setActiveTab] = useState("expense");
 
   return (
-    <div className="min-h-screen bg-[#f5f7fb] font-poppins flex flex-col justify-between">
-
-      {/* Content */}
-      <div className="p-4 pb-24">
-
-        {/* Header */}
-        <h2 className="text-xl font-semibold mb-4">Track</h2>
-
-        {/* Top Cards */}
-        <div className="grid md:grid-cols-3 gap-4 mb-6">
-          <TopCard title="Income" value="₹85k" color="green" />
-          <TopCard title="Expense" value="₹48k" color="red" />
-          <TopCard title="Savings" value="43.5%" color="blue" />
+    <div className="flex bg-white min-h-screen">
+      <Sidebar />
+      <div className="ml-64 flex-1 bg-gray-50 min-h-screen p-8 pb-12">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Income & Expense Tracker</h1>
+          <p className="text-sm text-gray-500 mt-1">Manage your financial profile and track spending</p>
         </div>
 
-        {/* Chart */}
-        <h3 className="text-lg font-semibold mb-3">Income vs Expense</h3>
+        <div className="flex flex-wrap gap-3 mb-6">
+          <button
+            onClick={() => setActiveTab("expense")}
+            className={`rounded-full px-5 py-3 text-sm font-semibold transition ${
+              activeTab === "expense"
+                ? "bg-white text-slate-900 shadow-sm"
+                : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+            }`}
+          >
+            Expense Breakdown
+          </button>
+          <button
+            onClick={() => setActiveTab("monthly")}
+            className={`rounded-full px-5 py-3 text-sm font-semibold transition ${
+              activeTab === "monthly"
+                ? "bg-white text-slate-900 shadow-sm"
+                : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+            }`}
+          >
+            Monthly Trends
+          </button>
+        </div>
 
-        <div className="bg-white rounded-3xl p-4 shadow-sm mb-6">
-          <div className="flex items-end justify-between h-44 gap-2">
-            {chartData.map((item) => (
-              <div key={item.m} className="relative flex flex-col items-center gap-1 group">
-
-                {/* Bigger Tooltip */}
-                <div className="absolute -top-20 left-1/2 -translate-x-1/2 hidden group-hover:block bg-white shadow-lg rounded-xl px-4 py-3 text-sm w-36">
-                  <p className="font-medium">{item.m}</p>
-                  <p className="text-green-500">income: {item.inc}</p>
-                  <p className="text-red-500">expense: {item.exp}</p>
+        {activeTab === "expense" ? (
+          <div className="grid grid-cols-1 xl:grid-cols-[1.05fr_0.95fr] gap-6">
+            <div className="rounded-[32px] border border-gray-200 bg-white p-6 shadow-sm">
+              <p className="text-lg font-semibold text-gray-900 mb-6">Expense Categories</p>
+              <div className="flex flex-col items-center">
+                <div className="w-full max-w-md">
+                  <ResponsiveContainer width="100%" height={320}>
+                    <PieChart>
+                      <Pie data={donutData} dataKey="value" innerRadius={72} outerRadius={120} paddingAngle={2}>
+                        {donutData.map((entry) => (
+                          <Cell key={entry.name} fill={entry.color} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
                 </div>
-
-                <div className="flex items-end gap-1">
-                  <div className="w-3 bg-green-500 rounded-lg" style={{ height: item.inc / 1000 }}></div>
-                  <div className="w-3 bg-red-500 rounded-lg" style={{ height: item.exp / 1000 }}></div>
-                </div>
-                <span className="text-xs text-gray-400">{item.m}</span>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Category Breakdown */}
-        <h2 className="text-lg font-semibold mb-3">Category Breakdown</h2>
-
-        <div className="bg-white rounded-3xl p-4 shadow-sm flex items-center gap-6">
-          <div className="relative w-32 h-32">
-            <div className="w-full h-full rounded-full border-[16px] border-purple-500 border-r-orange-400 border-b-green-400 border-l-pink-400"></div>
-          </div>
-
-          <div className="text-sm w-full space-y-2">
-            <Legend color="bg-orange-400" label="Food & Dining" value="25%" />
-            <Legend color="bg-purple-500" label="Housing" value="52%" />
-            <Legend color="bg-green-400" label="Transportation" value="9%" />
-          </div>
-        </div>
-
-        {/* Transactions */}
-        <h2 className="text-lg font-semibold mt-6 mb-3">Recent Transactions</h2>
-
-        <div className="space-y-3">
-          <Transaction title="Lunch at Cafe" time="Mar 6 • 2:30 PM" amount="-₹850" type="expense" />
-          <Transaction title="Online Shopping" time="Mar 5 • 6:45 PM" amount="-₹2,500" type="expense" />
-          <Transaction title="Monthly Salary" time="Mar 1 • 12:00 AM" amount="+₹85,000" type="income" />
-          <Transaction title="Home Loan EMI" time="Mar 1 • 9:00 AM" amount="-₹25,000" type="expense" />
-          <Transaction title="Grocery Shopping" time="Feb 28 • 7:15 PM" amount="-₹3,500" type="expense" />
-        </div>
-      </div>
-
-      {/* Floating Button */}
-      <button onClick={() => setShowModal(true)} className="fixed bottom-20 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg">
-        <Plus />
-      </button>
-
-      {/* Bigger Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/30 flex items-center justify-center">
-          <div className="bg-white p-8 rounded-2xl w-96">
-            <h2 className="text-lg font-semibold mb-4">Add Transaction</h2>
-            <input
-              type="number"
-              placeholder="Enter amount"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              className="w-full border p-3 rounded-lg mb-4"
-            />
-            <div className="flex gap-3">
-              <button
-                onClick={() => {
-                  const updated = [...chartData];
-                  updated[updated.length - 1].inc += Number(amount);
-                  setChartData(updated);
-                  setShowModal(false);
-                  setAmount("");
-                }}
-                className="flex-1 bg-green-500 text-white py-3 rounded-lg"
-              >
-                Add Income
-              </button>
-
-              <button
-                onClick={() => {
-                  const updated = [...chartData];
-                  updated[updated.length - 1].exp += Number(amount);
-                  setChartData(updated);
-                  setShowModal(false);
-                  setAmount("");
-                }}
-                className="flex-1 bg-red-500 text-white py-3 rounded-lg"
-              >
-                Add Expense
-              </button>
+              <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-slate-600">
+                {donutData.map((entry) => (
+                  <div key={entry.name} className="flex items-center gap-2">
+                    <span className="inline-flex h-2.5 w-2.5 rounded-full" style={{ backgroundColor: entry.color }} />
+                    <span>{entry.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            <button onClick={() => setShowModal(false)} className="mt-4 text-sm text-gray-400">
-              Cancel
-            </button>
+            <div className="rounded-[32px] border border-gray-200 bg-white p-6 shadow-sm">
+              <p className="text-lg font-semibold text-gray-900 mb-6">Spending by Category</p>
+              <div className="space-y-4">
+                {expenseCategories.map((item) => (
+                  <div key={item.name} className="flex items-center justify-between gap-4 rounded-3xl border border-slate-200 bg-slate-50 px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <span className="inline-flex h-3.5 w-3.5 rounded-full" style={{ backgroundColor: item.color }} />
+                      <span className="font-medium text-slate-800">{item.name}</span>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold text-slate-900">₹{item.amount}</p>
+                      <p className="text-xs text-slate-500">{item.percentage}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-6 border-t border-slate-200 pt-4 flex items-center justify-between text-sm font-semibold text-slate-900">
+                <span>Total Monthly</span>
+                <span>₹3,000</span>
+              </div>
+            </div>
           </div>
-        </div>
-      )}
-
-      {/* Bottom Nav */}
-      <div className="bg-white rounded-t-3xl p-3 flex justify-around items-center shadow-lg">
-        <NavItem icon={<Home size={20} />} label="Home" />
-        <NavItem icon={<BarChart2 size={20} />} label="Track" active />
-        <NavItem icon={<Target size={20} />} label="Simulate" />
-        <NavItem icon={<Folder size={20} />} label="Scenarios" />
-        <NavItem icon={<User size={20} />} label="Profile" />
+        ) : (
+          <div className="rounded-[32px] border border-gray-200 bg-white p-6 shadow-sm">
+            <div className="mb-6">
+              <p className="text-lg font-semibold text-gray-900">Monthly Income vs Expenses</p>
+              <p className="text-sm text-slate-500 mt-1">2026 projected trend</p>
+            </div>
+            <div className="w-full h-[420px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={monthlyData} margin={{ top: 8, right: 24, left: -16, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 11 }} />
+                  <YAxis axisLine={false} tickLine={false} tick={{ fill: '#64748b', fontSize: 11 }} tickFormatter={(value) => `₹${value / 1000}k`} />
+                  <Tooltip formatter={(value) => [`₹${value.toLocaleString()}`, '']} cursor={{ fill: 'rgba(148,163,184,0.08)' }} />
+                  <Legend verticalAlign="bottom" height={36} iconType="circle" wrapperStyle={{ fontSize: 12, color: '#0f172a' }} />
+                  <Bar dataKey="income" name="Income" fill="#10b981" radius={[10, 10, 0, 0]} barSize={28} />
+                  <Bar dataKey="expenses" name="Expenses" fill="#ef4444" radius={[10, 10, 0, 0]} barSize={28} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        )}
       </div>
-
-    </div>
-  );
-}
-
-function Transaction({ title, time, amount, type }) {
-  const getIcon = () => {
-    if (title.includes("Lunch")) return <Utensils size={18} />;
-    if (title.includes("Shopping")) return <ShoppingBag size={18} />;
-    if (title.includes("Salary")) return <Wallet size={18} />;
-    if (title.includes("Loan")) return <CreditCard size={18} />;
-    if (title.includes("Grocery")) return <ShoppingCart size={18} />;
-    return <Wallet size={18} />;
-  };
-
-  return (
-    <div className="bg-white p-4 rounded-2xl shadow-sm flex justify-between items-center">
-      <div className="flex items-center gap-3">
-        <div className="p-2 bg-gray-100 rounded-lg text-gray-600">
-          {getIcon()}
-        </div>
-        <div>
-          <p className="font-medium">{title}</p>
-          <p className="text-sm text-gray-400">{time}</p>
-        </div>
-      </div>
-      <p className={`font-semibold ${type === "income" ? "text-green-500" : "text-red-500"}`}>
-        {amount}
-      </p>
-    </div>
-  );
-}
-
-function Legend({ color, label, value }) {
-  return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-2">
-        <span className={`w-3 h-3 rounded-full ${color}`}></span>
-        <span>{label}</span>
-      </div>
-      <span>{value}</span>
-    </div>
-  );
-}
-
-function TopCard({ title, value, color }) {
-  const styles = {
-    green: "bg-green-50 border border-green-200 text-green-700",
-    red: "bg-red-50 border border-red-200 text-red-600",
-    blue: "bg-indigo-50 border border-indigo-200 text-indigo-600",
-  };
-
-  return (
-    <div className={`p-4 rounded-2xl ${styles[color]} shadow-sm`}>
-      <p className="text-sm">{title}</p>
-      <h2 className="text-xl font-semibold">{value}</h2>
-    </div>
-  );
-}
-
-function NavItem({ icon, label, active }) {
-  return (
-    <div className={`flex flex-col items-center text-xs ${active ? "text-green-500" : "text-gray-400"}`}>
-      {icon}
-      <span>{label}</span>
     </div>
   );
 }

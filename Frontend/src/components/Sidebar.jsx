@@ -1,9 +1,10 @@
 import { Home, Zap, GitCompare, Briefcase, TrendingUp } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function Sidebar() {
   const navigate = useNavigate();
-  const currentPath = window.location.pathname;
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const navItems = [
     { label: 'Dashboard', icon: Home, path: '/dashboard' },

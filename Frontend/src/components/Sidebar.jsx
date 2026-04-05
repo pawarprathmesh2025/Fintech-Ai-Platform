@@ -1,10 +1,22 @@
 import { Home, Zap, GitCompare, Briefcase, TrendingUp } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 function Sidebar() {
+  const navigate = useNavigate();
+  const currentPath = window.location.pathname;
+
+  const navItems = [
+    { label: 'Dashboard', icon: Home, path: '/dashboard' },
+    { label: 'Scenarios', icon: Zap, path: '/scenarios' },
+    { label: 'Compare', icon: GitCompare, path: '/compare' },
+    { label: 'Portfolio', icon: Briefcase, path: '/portfolio' },
+    { label: 'Tracker', icon: TrendingUp, path: '/tracker' }
+  ];
+
   return (
     <div className="w-64 bg-white border-r border-gray-200 h-screen fixed left-0 top-0 p-6 flex flex-col">
       {/* Logo */}
-      <div className="flex items-center gap-3 mb-10">
+      <div className="flex items-center gap-3 mb-10 cursor-pointer" onClick={() => navigate('/dashboard')}>
         <div className="w-10 h-10 bg-teal-500 rounded-lg flex items-center justify-center shadow-lg">
           <span className="text-white font-bold text-lg">F</span>
         </div>
@@ -16,30 +28,24 @@ function Sidebar() {
 
       {/* Navigation Items */}
       <nav className="space-y-2 flex-1">
-        <div className="flex items-center gap-3 px-4 py-3 bg-teal-50 text-teal-600 rounded-lg font-medium transition">
-          <Home size={20} />
-          <span>Dashboard</span>
-        </div>
-
-        <div className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg cursor-pointer transition">
-          <Zap size={20} />
-          <span>Scenarios</span>
-        </div>
-
-        <div className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg cursor-pointer transition">
-          <GitCompare size={20} />
-          <span>Compare</span>
-        </div>
-
-        <div className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg cursor-pointer transition">
-          <Briefcase size={20} />
-          <span>Portfolio</span>
-        </div>
-
-        <div className="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-lg cursor-pointer transition">
-          <TrendingUp size={20} />
-          <span>Tracker</span>
-        </div>
+        {navItems.map((item) => {
+          const isActive = currentPath === item.path;
+          const Icon = item.icon;
+          return (
+            <div
+              key={item.path}
+              onClick={() => navigate(item.path)}
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg cursor-pointer transition ${
+                isActive
+                  ? 'bg-teal-50 text-teal-600 font-medium'
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`}
+            >
+              <Icon size={20} />
+              <span>{item.label}</span>
+            </div>
+          );
+        })}
       </nav>
 
       {/* AI Powered Section */}

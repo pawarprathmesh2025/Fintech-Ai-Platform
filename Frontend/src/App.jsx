@@ -4,6 +4,7 @@ import Dashboard from "./pages/Dashboard";
 import Scenarios from "./pages/Scenarios";
 import Compare from "./pages/Compare";
 import Portfolio from "./pages/Portfolio";
+import Profile from "./pages/Profile";
 import TrackPage from "./components/TrackPage";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Route path="/compare" element={<Compare />} />
         <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/tracker" element={<TrackPage />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );

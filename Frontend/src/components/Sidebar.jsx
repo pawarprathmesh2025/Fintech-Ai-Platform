@@ -1,4 +1,4 @@
-import { Home, Zap, GitCompare, Briefcase, TrendingUp } from 'lucide-react';
+import { Home, Zap, GitCompare, Briefcase, TrendingUp, User } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 function Sidebar() {
@@ -11,7 +11,8 @@ function Sidebar() {
     { label: 'Scenarios', icon: Zap, path: '/scenarios' },
     { label: 'Compare', icon: GitCompare, path: '/compare' },
     { label: 'Portfolio', icon: Briefcase, path: '/portfolio' },
-    { label: 'Tracker', icon: TrendingUp, path: '/tracker' }
+    { label: 'Tracker', icon: TrendingUp, path: '/tracker' },
+    { label: 'Profile', icon: User, path: '/profile' }
   ];
 
   return (
